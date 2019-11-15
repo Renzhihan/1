@@ -1,0 +1,42 @@
+加载图像(cv::imread)
+使图像成为Mat对象
+第一个参数表示图像文件名称 第二个表示类型（支持JPG PNG TIFF)
+IMREAD_UNCHANGED(<0) 加载原图，不做任何改变
+IMREAD_GRAYSCALE(0) 作为灰度图像
+IMREAD_COLOR(>0) 作为RPG模式
+
+#include<opencv2/opencv.hpp>
+#include<iostream>
+
+
+int main(int argc,char** argv)
+{
+	using namespace cv;
+	Mat src = imread("C:/Users/75741/source/repos/open/0F49FD1C9EB01DCA8546C761AF40620C.jpg");
+	if (src.empty()) 
+	{
+		printf("couldnt load image\n");
+		return -1;
+	}
+
+	namedWindow("test opencv setup", CV_WINDOW_AUTOSIZE);
+	imshow("", src);
+
+	waitKey(0);
+	return 0;
+}
+
+显示图像（cv::namedWindows cv::imshow)
+namedWindows("window title",WINDOW_AUTOSIZE)
+imshow根据窗口名称显示图像到指定窗口，第一个是窗口名称第二个是Mat对象
+
+修改图像（cv::cvtColor)
+1.原图像
+2.转换之后
+3.表示源和目标色彩空间
+cvtColor(src,output_image,CV_BGR2GRAY)//转换为灰度图像
+
+保存（cv::imwrite)
+
+
+
