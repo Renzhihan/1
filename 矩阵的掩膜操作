@@ -1,0 +1,62 @@
+获取图像像素指针
+Mat.ptr<uchar>(int i=0)获取像素矩阵的指针，索引i表示第几行，从0开始计行数
+获得当前行指针 const uchar*current=myImage.ptr<uchar>(row)
+获取当前像素点P(row,col)的像素值p（row,col)=current[col]
+像素范围处理  saturate_cast<uchar>
+saturate_cast<uchar>(-100),返回0
+saturate_cast<uchar>(288),返回255
+saturate_cast<uchar>(100),返回100
+确保RGB的值在0~255之间
+掩膜（mask 也称作Kernel)  通过掩膜操作使图像对比度提高
+#include<opencv2/opencv.hpp>
+#include<iostream>
+#include<math.h>
+
+int main(int argc,char** argv)
+{
+	using namespace cv;
+	Mat src, dst;
+	src = imread("C:/Users/75741/source/repos/open/IMG_20190609_091306.jpg");
+	if (!src.data)
+	{
+		printf("couldnt load image\n");
+		return -1;
+	}
+	resize(src, src, Size(700, 700));
+	namedWindow("input image", CV_WINDOW_AUTOSIZE);
+	imshow("input image", src);
+
+	int cols = src.cols * src.channels();
+	int offsetx = src.channels();
+	int rows = src.rows;
+	dst = Mat::zeros(src.size(), src.type());
+	for (int row = 1; row < rows - 1; row++)
+	{
+		
+		const uchar*current=src.ptr<uchar>(row);
+		const uchar* previous = src.ptr<uchar>(row-1);
+		const uchar* next = src.ptr<uchar>(row+1);
+		uchar* output = dst.ptr<uchar>(row);
+		for (int col = offsetx; col < cols; col++)
+		{
+			output[col] =saturate_cast<uchar>( 5 * current[col] - (current[col - offsetx] + current[col + offsetx]+previous[col]+next[col]));
+		}
+	}
+
+	filter2D
+
+	namedWindow("contrast image demo", CV_WINDOW_AUTOSIZE);
+	resize(dst, dst, Size(700, 700));
+	imshow("contrast image demo", dst);
+
+	waitKey(0);
+	return 0;
+}
+
+
+函数调用filter2D功能
+1.定义掩膜：Mat kernel=(Mat_<char>(3,3)<<0,-1,0,-1,5,-1,0,-1,0)
+2.filter2D(src,dst,src.depth(),kernel)
+  src与dst是Mat类型变量，src.depth 表示位图深度（32，24，8）
+  	Mat kernel = (Mat_<char>(3, 3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
+	filter2D(src, dst, src.depth(), kernel);
