@@ -1,0 +1,36 @@
+读写图像
+  int gray = gray_src.at<uchar>(row, col);
+	
+  Mat dst;
+	dst.create(src.size(), src.type());
+	int height = src.rows;
+	int width = src.cols;
+	int nc = src.channels();
+  for (int row = 0; row < height; row++)
+	{
+		for (int col = 0; col < width; col++)
+		{
+			if (nc == 1)//单通道
+			{
+				int gray = gray_src.at<uchar>(row, col);
+				gray_src.at<uchar>(row, col) = 155 - gray;
+			}
+			else if (nc == 3)//三通道
+			{
+				int b = dst.at<Vec3b>(row, col)[0];
+				int g = dst.at<Vec3b>(row, col)[1];
+				int r = dst.at<Vec3b>(row, col)[2];
+				dst.at<Vec3b>(row, col)[0] = 255 - b;
+				dst.at<Vec3b>(row, col)[1] = 255 - g;
+				dst.at<Vec3b>(row, col)[2] = 255 - r;
+			}
+		}
+	}
+  
+  	bitwise_not(src, dst);
+    
+修改像素值
+  空白图像赋值 img=Scalar(0)
+  
+Vec3b对应 blue green red 的uchar类型
+Vec3F对应三通道的float类型数据
