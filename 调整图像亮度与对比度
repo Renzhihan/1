@@ -1,0 +1,65 @@
+图像变换
+1.像素变换-点操作
+2.邻域操作-区域
+调整图像亮度和对比度属于像素变换-点操作
+
+Mat new_image=Mat::zeros(image.size(),image.type());  创建一个和原图像大小和类型一致的空白图像、像素值初始化为0
+staturate_cast<uchar>(value)  确保值大小范围为0~255
+Mat.at<Vec3b>(y,x)[index]=value 给每个像素点每个通道赋值
+
+#include<opencv2/opencv.hpp>
+#include<iostream>
+#include<math.h>
+
+int main(int argc,char** argv)
+{
+	using namespace cv;
+	using namespace std;
+	Mat src,src1,dst;
+	src = imread("C:/Users/75741/source/repos/open/IMG_20190609_091306.jpg");
+	if (!src.data)
+	{
+		cout << "couldnt load image1\n" << endl;
+		return -1;
+	}
+	char input_win[] = "input image";
+	resize(src, src, Size(700, 700));
+	namedWindow(input_win, CV_WINDOW_AUTOSIZE);
+	imshow(input_win, src);
+
+	//contrast and bright change
+	int height = src.rows;
+	int width = src.cols;
+	dst = Mat::zeros(src.size(), src.type());
+	float alpha = 1.2;
+	float beta = 30;
+	for (int row = 0; row < height; row++)
+	{
+		for (int col = 0; col < width; col++)
+		{
+			if (src.channels() == 3)
+			{
+				float b=src.at<Vec3b>(row, col)[0];
+				float g = src.at<Vec3b>(row, col)[1];
+				float r = src.at<Vec3b>(row, col)[2];
+
+				dst.at<Vec3b>(row, col)[0]=saturate_cast<uchar>(b*alpha+beta);
+				dst.at<Vec3b>(row, col)[1] = saturate_cast<uchar>(g * alpha + beta);
+				dst.at<Vec3b>(row, col)[2] = saturate_cast<uchar>(r * alpha + beta);
+
+			}
+			else if (src.channels() == 1)
+			{
+				float v = src.at<uchar>(row, col);
+				dst.at<uchar>(row, col) = saturate_cast<uchar>(v * alpha + beta);
+			}
+		}
+	}
+
+	char output_title[] = "contrast and ";
+	namedWindow(output_title, CV_WINDOW_AUTOSIZE);
+	imshow(output_title, dst);
+
+	waitKey(0);
+	return 0;
+}
