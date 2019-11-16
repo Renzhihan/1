@@ -1,0 +1,68 @@
+Mat对象与IplImage对象
+Mat对象自动分配内存，不存在内存泄漏，面向对象的数据结构。分为头部与数据部分
+IplImage是c语言风格的数据结构，需要自己分配与管理内存，容易导致内存泄漏问题
+
+Mat对象构造函数与常用方法
+  1.复制一个图像
+  Mat dst;
+	dst=Mat(src.size(), src.type());
+	dst = Scalar(127, 0, 255);
+	namedWindow("output", CV_WINDOW_AUTOSIZE);
+	imshow("output", dst);*/
+  
+  2.复制一个图像
+  Mat dst = src.clone();
+	namedWindow("output", CV_WINDOW_AUTOSIZE);
+	imshow("output", dst);
+  
+  3.复制一个图像	
+  Mat dst ;
+	src.copyTo(dst);
+  
+  4.灰度	
+  Mat dst ;
+	namedWindow("output", CV_WINDOW_AUTOSIZE);
+
+	cvtColor(src, dst, CV_BGR2GRAY);
+	printf("input image channels :%d\n",src.channels());
+	printf("input image channels :%d", dst.channels());
+	imshow("output ", dst);
+  
+  5.第一个像素的灰度值
+  const uchar*firstRow=dst.ptr<uchar>(0);
+	printf("first pixel value :%d", *firstRow);
+  
+  6.通道数
+  int cols = dst.cols;
+	int rows = dst.rows;
+	printf("rows :%d cols :%d\n", rows, cols);
+  
+  7.
+  Mat M(3, 3, CV_8UC3, Scalar(0, 0, 255));
+	cout << "M=" << endl << M << endl;
+  
+Mat对象使用
+部分复制：一般只复制mat对象的头和指针部分，不会复制数据部分
+  Mat A=imread(imgFilePath)
+  Mat A(B)
+完全复制：头和数据一起复制
+  Mat F =A.clone(); Mat G;A.copyTo(G);
+  
+输出的内存是自动分配的
+赋值和拷贝构造函数只复制头部分
+使用clone和copy To实现完全复制
+
+cv::Mat::Mat
+1.行（row）
+2.列（column）
+3.8UC3 8表示每个通道占8位，U表示无符号，C表示Char类型，3表示通道数目是3
+4.向量表示初始化每个像素值是多少，向量长度对应通道数目一致
+
+创建多维数组
+int sz[3]={2,2,2};
+Mat L(3,sz,CV_8UC1,Scalar::all(0));
+
+  create 实现
+  	Mat m;
+	m.create(src.size(), src.type());
+	m = Scalar(0, 0, 255);
