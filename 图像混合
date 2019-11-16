@@ -1,0 +1,56 @@
+线性混合操作
+void cv::addWeighted
+(
+InputArray src1,    图像1
+double alpha,   1的α值
+InputArray src2,    图像2
+double beta,    2的α值
+double gamma,   gamma值
+OutputArray dst,  输出
+int dtype=-1
+)
+两张图大小类型都一样
+
+#include<opencv2/opencv.hpp>
+#include<iostream>
+#include<math.h>
+
+int main(int argc,char** argv)
+{
+	using namespace cv;
+	using namespace std;
+	Mat src,src1,dst;
+	src = imread("C:/Users/75741/source/repos/open/IMG_20190609_091306.jpg");
+	src1 = imread("C:/Users/75741/source/repos/open/0F49FD1C9EB01DCA8546C761AF40620C.jpg");
+	if (!src.data)
+	{
+		cout << "couldnt load image1\n" << endl;
+		return -1;
+	}
+	if (!src1.data)
+	{
+		cout << "couldnt load image2\n" << endl;
+		return -1;
+	}
+	double alpha = 0.5;
+	if (src.rows == src1.rows && src.cols == src1.cols&&src.type()==src1.type())
+	{
+		addWeighted(src, alpha, src1, (1.0 - alpha), 0.0, dst);
+		imshow("1", src);
+		imshow("2", src1);
+		resize(src, src, Size(700, 700));
+		namedWindow("input image", CV_WINDOW_AUTOSIZE);
+		imshow("bleend",dst);
+	}
+	else
+	{
+		printf("could not blend images");
+		return -1;
+	}
+
+	waitKey(0);
+	return 0;
+}
+
+
+		add(src1, src, dst, Mat());//过于生硬
