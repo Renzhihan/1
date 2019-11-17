@@ -1,0 +1,109 @@
+cv::Point cv::Scala
+  Point 表示2D平面上一个点x，y
+  Point p；
+  p.x=10；
+  p.y=8；
+  or
+  p=Point（10，8）；
+  Scalar 表示四个元素的向量
+  Scalar(a,b,c);
+  a=blue,b=green,c=red 表示RGB通道
+绘制基本几何形状
+  线cv::line()
+  Mat bgImage;
+const char* drademo_win = "draw shaper and text demo";
+int main(int argc,char** argv)
+{
+	void MyLines();
+	bgImage = imread("C:/Users/75741/source/repos/open/IMG_20190609_091306.jpg");
+	if (!bgImage.data)
+	{
+		cout << "couldnt load image1\n" << endl;
+		return -1;
+	}
+	MyLines();
+	resize(bgImage, bgImage, Size(700, 700));
+	namedWindow(drademo_win, CV_WINDOW_AUTOSIZE);
+	imshow(drademo_win, bgImage);
+
+	waitKey(0);
+	return 0;
+}
+
+void MyLines()
+{
+	Point p1 = Point(20, 30);
+	Point p2;
+	p2.x = 300;
+	p2.y = 300;
+	Scalar color = Scalar(0, 0, 255);
+	line(bgImage, p1, p2, color, 1, LINE_8);
+}
+绘制矩形
+void MyRectangle()
+{
+	Rect rect = Rect(200, 100, 300, 300);
+	Scalar color = Scalar(0, 0, 255);
+	rectangle(bgImage, rect, color, 2, LINE_8);
+}
+
+绘制椭圆
+void MyEllipse()
+{
+	Scalar color = Scalar(0, 255, 0);
+	ellipse(bgImage, Point(bgImage.cols / 2, bgImage.rows / 2), Size(bgImage.cols / 4, bgImage.rows / 8),90,0,360,color,2,LINE_8);
+}
+
+绘制圆
+void MyCircle()
+{
+	Rect rect = Rect(200, 100, 300, 300);
+	Scalar color = Scalar(0, 255, 0);
+	Point center = Point(bgImage.cols / 2, bgImage.rows / 2);
+	circle(bgImage, center,150, color, 2, 8);
+}
+
+绘制多边形
+void MyPolygon()
+{
+	Point pts[1][5];
+	pts[0][0] = Point(100, 100);
+	pts[0][1] = Point(100, 200);
+	pts[0][2] = Point(200, 200);
+	pts[0][3] = Point(200, 100);
+	pts[0][4] = Point(100, 100);
+
+	const Point* ppts = { pts[0] };
+	int npt[] = { 5 };
+	Scalar color = Scalar(0, 255, 0);
+
+	fillPoly(bgImage, ppts, npt, 1, color, 8);
+}
+
+输出文字
+putText(bgImage, "hello", Point(300, 300), CV_FONT_HERSHEY_COMPLEX, 1.0, Scalar(12,255,200),1,8);
+
+
+随机画线
+void RandomLinedemo()
+{
+	RNG rng(12345);
+	Point pt1;
+	Point pt2;
+	Mat bg = Mat::zeros(bgImage.size(), bgImage.type());
+	namedWindow("random", CV_WINDOW_AUTOSIZE);
+	for (int i = 0; i < 10000000; i++)
+	{
+		pt1.x = rng.uniform(0, bgImage.cols);
+		pt2.x = rng.uniform(0, bgImage.cols);
+		pt1.y = rng.uniform(0, bgImage.rows);
+		pt2.y = rng.uniform(0, bgImage.rows);
+		Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+		if (waitKey(50) > 0)
+		{
+			break;
+		}
+		line(bgImage, pt1, pt2, color,  1, 8);
+		imshow("random",bg);
+	}
+}
