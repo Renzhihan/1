@@ -107,3 +107,7 @@ void RandomLinedemo()
 		imshow("random",bg);
 	}
 }
+
+随机数生成
+高斯随机数gaussian(double sigma)
+正态分布随机数uniform(int a,int b)
