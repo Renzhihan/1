@@ -1,2 +1,26 @@
 Smooth/Blur 是图像处理中最简单和常用的操作
-预处理时降低噪声    背后是卷积计算
+预处理时降低噪声    背后是卷积计算   卷积算子都是线性操作 所以又叫线性滤波
+归一化盒子滤波（均值滤波）
+高斯滤波  保留像素原有特征
+均值模糊
+  blur(Mat src,Mat dst,Size(xradius,yradius),Point(-1,1));
+高斯模糊
+  GaussianBlur(Mat src,Mat dst,Size(11,11),sigmax,sigmay)
+  Size(x,y) x,y必须是正奇数
+  	imshow(input_title, src);
+
+	blur(src, dst, Size(5,5), Point(-1, -1));     //均值模糊
+	imshow(output_title, dst);
+
+	Mat gblur;
+	GaussianBlur(src, gblur, Size(15, 15), 11, 11);   //高斯模糊
+	imshow("gaussianblur", dst);
+  
+  中值滤波
+  统计排序滤波器
+  对椒盐噪声有很好的抑制作用   
+  
+  双边滤波
+  均值模糊无法克服边缘像素信息丢失缺陷，原因是均值滤波是基于平均值
+  高斯模糊部分克服该缺陷，但无法完全避免，因为没有考虑像素值的不同
+  高斯双边模糊是边缘保留的滤波方法，避免了边缘信息丢失，保留了图像轮廓不变
