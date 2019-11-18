@@ -28,8 +28,9 @@ Smooth/Blur 是图像处理中最简单和常用的操作
   中值模糊medianBlur(Mat src,Mat dest,ksize)
   双边模糊bilateraalFilter(
   src,	
-  dest,
-  d=15,		
-  150,	
-  3);
-  
+  dest,		
+  d=15,	//计算的半径
+  150,	//决定多少差值之内的像素会被计算
+  3 //如果d大于0则声明无效，否则根据他来计算d值
+  );
+  中值模糊的ksize大小必须是奇数且大于1
