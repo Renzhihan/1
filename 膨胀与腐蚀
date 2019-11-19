@@ -1,0 +1,24 @@
+形态学操作
+  图像形态学操作——基于形状的一系列图像处理操作的合集，主要是基于集合论基础上的形态学数学
+  四个基本操作：腐蚀，膨胀，开（open），闭（close）
+膨胀
+  跟卷积操作类似，假设有图像A和结构元素B，B在A上移动，B定义其中心为锚点，计算B覆盖下A的最大像素值用来替换锚点的像素，其中B作为结构体可以是任意形状
+  腐蚀与膨胀类似，以最小值替换锚点
+API
+  getStructuringElement(int shape,Size ksize,Point anchor)
+  1.形状
+  2.大小  奇数
+  3.锚点  默认是（-1，-1）意思就是中心像素
+  dilate(src,dst,kernel)  //膨胀
+  erode(src,dst,kernel)   //腐蚀
+动态调整结构元素大小
+  TrackBar
+  void CallBack_Demo(int, void*)
+{
+	int s = element_size * 2 + 1;
+	Mat structureElement = getStructuringElement(MORPH_RECT, Size(s, s), Point(-1, -1));
+	erode(src, dst, structureElement);  //腐蚀
+  
+	imshow(output_title, dst);
+	
+}
