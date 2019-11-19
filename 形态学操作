@@ -1,0 +1,29 @@
+开操作（open）
+  先腐蚀后膨胀
+  可去掉小对象，
+  
+  Mat kernel = getStructuringElement(MORPH_RECT,Size(3, 3), Point(-1, -1));
+	morphologyEx(src, dst, CV_MOP_OPEN,kernel );
+	imshow(output_title, dst);
+  
+闭操作
+  先膨胀后腐蚀
+  可填充小的洞
+  
+相关API
+  morphologyEx(
+  src,//输入
+  dest,//输出
+  CV_MOP_BLACKHAT,  //形态学操作类型
+  kernel//结构元素
+  );
+
+形态学梯度——Morphological Gradient
+  膨胀减去腐蚀
+  又称为基本梯度（其他还包括内部梯度和反向梯度）
+  
+顶帽——top hat
+  原图像与开操作之间的差值图像
+  
+黑帽操作
+  闭操作与原图像的差值图像
