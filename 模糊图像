@@ -34,3 +34,6 @@ Smooth/Blur 是图像处理中最简单和常用的操作
   3 //如果d大于0则声明无效，否则根据他来计算d值
   );
   中值模糊的ksize大小必须是奇数且大于1
+
+	medianBlur(src, dst, 3);//中值模糊
+	bilateralFilter(src, dst, 15, 150, 3);//双边模糊
