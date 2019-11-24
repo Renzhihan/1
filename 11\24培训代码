@@ -1,0 +1,46 @@
+#include<opencv2/opencv.hpp>
+#include<iostream>
+#include<math.h>
+
+using namespace std;
+using namespace cv;
+
+int main(int argc, char** argv) {
+
+	VideoCapture cap(0);
+
+	do {
+
+		Mat src;
+		Mat color_filtered;
+		Mat thresh_Image;
+		Mat result;
+		vector<Mat> channels;
+
+		cap.read(src);
+		src.copyTo(result);
+		imshow("Src_image", src);
+		split(src, channels);
+		color_filtered = channels[2] - channels[1];
+		threshold(color_filtered, thresh_Image, 80, 255, THRESH_BINARY);
+
+		vector<vector<Point>> Contours;
+		vector<Vec4i> hierarchy;
+		Mat Contour_Image(src.size(), CV_8UC3);
+		findContours(thresh_Image, Contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+
+		drawContours(Contour_Image, Contours, -1, Scalar(0, 0, 255), 1, LINE_AA);
+
+		drawContours(result, Contours, -1, Scalar(0, 255, 0), 3, LINE_AA);
+
+		imshow("color_flitered", color_filtered);
+		imshow("thresh_Image", thresh_Image);
+		imshow("Contour_Image", Contour_Image);
+		imshow("result", result);
+
+		waitKey(1);
+
+	} while (true);
+
+	return 0;
+}
