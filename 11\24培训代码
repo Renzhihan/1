@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
 		imshow("Contour_Image", Contour_Image);
 		imshow("result", result);
 
-		waitKey(1);
+		waitKey(0);
 
 	} while (true);
 
